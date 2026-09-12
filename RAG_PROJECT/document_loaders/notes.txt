@@ -1,0 +1,294 @@
+LLM HALLUCINATION — NOTES
+
+1. What is Hallucination?
+
+Hallucination in Large Language Models (LLMs) occurs when a model generates information that is incorrect, fabricated, unsupported, or not present in its source data, while presenting it as if it were true.
+
+Example:
+User: Who invented the Python programming language?
+LLM: "Python was invented by James Gosling in 1991."
+Reality: Python was created by Guido van Rossum.
+
+The response may sound confident and grammatically correct, but the information is false.
+
+2. Why Do LLMs Hallucinate?
+
+LLMs are primarily trained to predict the next likely token based on patterns learned from large amounts of data. They do not inherently verify whether every generated statement is factually correct.
+
+Main reasons:
+
+- Next-token prediction:
+  The model generates the most probable sequence of tokens rather than directly retrieving verified facts.
+
+- Incomplete or noisy training data:
+  Training datasets can contain errors, contradictions, outdated information, or low-quality content.
+
+- Lack of reliable grounding:
+  Without access to trusted sources or databases, the model may generate plausible information from learned patterns.
+
+- Ambiguous questions:
+  If a question is unclear, the model may make assumptions instead of asking for clarification.
+
+- Knowledge cutoff:
+  A model may not know about events, products, people, or facts that appeared after its training data.
+
+- Overgeneralization:
+  The model may combine information from different concepts and produce a statement that sounds reasonable but is incorrect.
+
+- Long or complex reasoning:
+  Errors can accumulate across multiple steps of reasoning, especially in complicated tasks.
+
+3. Types of Hallucinations
+
+A. Factual Hallucination
+The model provides a fact that is simply false.
+
+Example:
+"Mount Everest is located in Switzerland."
+
+B. Fabricated References
+The model invents books, research papers, URLs, authors, citations, or sources.
+
+Example:
+It may provide a research paper title that does not actually exist.
+
+C. Entity Hallucination
+The model creates incorrect details about a person, company, product, place, or organization.
+
+D. Contextual Hallucination
+The answer contradicts information provided in the user's prompt or conversation.
+
+E. Numerical Hallucination
+The model gives incorrect calculations, statistics, dates, percentages, or measurements.
+
+4. Hallucination vs. Simple Mistake
+
+A simple mistake can be an accidental error such as incorrect arithmetic.
+
+Hallucination specifically refers to generating unsupported or fabricated information, often with high confidence.
+
+5. Why Hallucinations Are Dangerous
+
+Hallucinations can be harmless in casual conversations but become serious in important applications.
+
+Potential risks:
+
+- Medical misinformation
+- Incorrect legal information
+- Financial misinformation
+- False academic citations
+- Incorrect programming advice
+- Fake news or misleading information
+- Incorrect business decisions
+
+Therefore, important AI systems should include methods for verification and grounding.
+
+6. How to Reduce Hallucinations
+
+A. Retrieval-Augmented Generation (RAG)
+
+RAG retrieves relevant information from an external knowledge source before generating an answer.
+
+Basic flow:
+
+User Query
+    ↓
+Retriever
+    ↓
+Relevant Documents
+    ↓
+LLM
+    ↓
+Grounded Answer
+
+Example:
+A company chatbot can retrieve information from the company's internal documentation and then use the retrieved content to answer the user.
+
+Advantages:
+- Provides external context
+- Can use updated information
+- Reduces unsupported answers
+- Can provide source citations
+
+B. Prompt Engineering
+
+Prompts can instruct the model to:
+
+- Use only the provided context.
+- Say "I don't know" when the answer is not supported.
+- Cite the source of important claims.
+- Avoid making assumptions.
+- Clearly distinguish facts from uncertainty.
+
+Example prompt:
+"Answer only using the information provided in the context. If the answer is not present, say that the information is unavailable."
+
+C. Fine-Tuning
+
+A model can be fine-tuned on high-quality domain-specific data.
+
+Fine-tuning can improve performance for a particular task, but it does not completely eliminate hallucinations.
+
+D. Tool Use
+
+LLMs can use external tools such as:
+
+- Search engines
+- Databases
+- Calculators
+- APIs
+- Code interpreters
+
+For example, a calculator can be used instead of asking the LLM to perform a complex calculation from memory.
+
+E. Human Verification
+
+For high-stakes applications, important AI-generated information should be reviewed by humans.
+
+7. RAG and Hallucination
+
+RAG is one of the most common techniques for reducing hallucination.
+
+Traditional LLM:
+Question → LLM → Answer
+
+RAG:
+Question → Retrieve relevant documents → LLM + documents → Answer
+
+The retrieved documents act as a grounding source.
+
+Important:
+RAG does NOT guarantee zero hallucinations. The model can still misunderstand the retrieved content or generate unsupported information.
+
+8. Grounding
+
+Grounding means connecting an LLM's response to reliable external information.
+
+Sources can include:
+
+- Company databases
+- Knowledge bases
+- PDFs
+- Websites
+- Vector databases
+- APIs
+- Structured databases
+
+A grounded model is more likely to produce answers that are supported by evidence.
+
+9. Hallucination Evaluation
+
+Hallucinations can be evaluated by checking whether generated claims are supported by trusted sources.
+
+Important evaluation concepts:
+
+- Faithfulness:
+  Does the answer remain supported by the provided context?
+
+- Factuality:
+  Is the information actually true?
+
+- Relevance:
+  Does the answer directly address the question?
+
+- Citation correctness:
+  Do the cited sources actually support the claims?
+
+10. Practical Example
+
+Suppose a user asks:
+
+"What is the refund policy of Company X?"
+
+Without grounding:
+The LLM may invent a refund period such as "You can request a refund within 30 days."
+
+With RAG:
+1. Search the company's policy documents.
+2. Retrieve the refund-policy section.
+3. Provide that information to the LLM.
+4. Generate an answer based on the retrieved content.
+
+This greatly reduces the chance of inventing a policy.
+
+11. Hallucination in Generative AI Applications
+
+Hallucination is especially important when building:
+
+- AI chatbots
+- Customer-support agents
+- Document Q&A systems
+- AI search systems
+- Coding assistants
+- Medical assistants
+- Legal assistants
+- Financial assistants
+- AI agents
+
+Developers should design systems so that the LLM is not the only source of truth.
+
+12. Key Difference: Knowledge vs. Verification
+
+LLMs can have a large amount of learned knowledge, but knowing patterns is not the same as verifying facts.
+
+Therefore:
+
+LLM output ≠ Guaranteed truth
+
+The output should be treated as a generated response that may require verification, especially for high-stakes information.
+
+13. Best Practices
+
+To reduce hallucinations:
+
+- Use reliable and high-quality data.
+- Use RAG for domain-specific information.
+- Give the model relevant context.
+- Use tools for calculations and real-time information.
+- Ask the model to state uncertainty.
+- Use citations where appropriate.
+- Validate important outputs.
+- Add human review for high-risk decisions.
+- Monitor hallucination rates in production.
+- Keep knowledge sources updated.
+
+14. Important Interview Points
+
+Q: What is LLM hallucination?
+A: It is the generation of false, fabricated, or unsupported information by an LLM, often presented confidently as if it were true.
+
+Q: Why do LLMs hallucinate?
+A: Because they generate probable text based on learned patterns rather than inherently verifying every fact. Poor data, missing context, ambiguity, and lack of grounding can increase hallucinations.
+
+Q: How does RAG reduce hallucination?
+A: RAG retrieves relevant external information and provides it as context to the LLM, allowing the model to generate answers based on a grounding source.
+
+Q: Does RAG completely eliminate hallucination?
+A: No. The model can still misunderstand, ignore, or go beyond the retrieved information.
+
+Q: How can hallucinations be reduced?
+A: Use RAG, high-quality data, prompt engineering, tool calling, fine-tuning where appropriate, output validation, citations, and human review.
+
+15. Quick Summary
+
+Hallucination = False or unsupported information generated by an LLM.
+
+Main causes:
+- Probabilistic text generation
+- Poor/noisy training data
+- Missing context
+- Ambiguous prompts
+- Outdated knowledge
+- Lack of external grounding
+
+Main solutions:
+- RAG
+- Prompt engineering
+- Tool use
+- High-quality data
+- Fine-tuning
+- Verification
+- Human-in-the-loop
+
+Most important idea:
+LLMs are powerful generators of language, but their responses should not automatically be treated as verified facts.
